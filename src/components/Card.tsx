@@ -20,7 +20,9 @@ const Card: FunctionalComponent<Props> = props => (
     <div className="keyword">{props['キーワード']}</div>
     <div className="target">{props['対象者']}</div>
     <div className="url">
-      <a href={props.URL}>アクセスしてみる</a>
+      <a href={props.URL} target="_blank" rel="noopener noreferrer">
+        アクセスしてみる
+      </a>
     </div>
   </Container>
 );
