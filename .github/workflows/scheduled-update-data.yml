@@ -1,0 +1,34 @@
+name: scheduled data updater
+
+on:
+  schedule:
+    - cron: '* */6 * * *'
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Update data
+        run: yarn generate:data
+
+      - name: Commit generated data files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data
+          git commit -m "[Scheduled] update data" || echo "no commit changes"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          repository: codeforyouth/vs-covid19
+          github_token: ${{ secrets.GITHUB_TOKEN }}

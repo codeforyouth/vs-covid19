@@ -3,8 +3,11 @@
     "outDir": "./dist",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "CommonJS",
+    "typeRoots" : ["./node_modules/@types"],
     "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "target": "es6",
     "jsx": "react",
     "jsxFactory": "h"

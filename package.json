@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "parcel src/index.html --no-cache",
     "build": "parcel build src/index.html --no-source-maps",
-    "watch": "parcel watch src/index.html"
+    "watch": "parcel watch src/index.html",
+    "generate:data": "ts-node src/scripts/generate-data.ts"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.7",
     "@babel/plugin-transform-runtime": "^7.8.3",
+    "@types/node": "^13.11.1",
     "@types/styled-components": "^5.0.1",
     "@typescript-eslint/eslint-plugin": "^2.23.0",
     "@typescript-eslint/parser": "^2.23.0",
@@ -39,6 +41,7 @@
     "lint-staged": "^10.0.8",
     "parcel-bundler": "^1.12.4",
     "prettier": "^1.19.1",
+    "ts-node": "^8.8.2",
     "typescript": "^3.8.3"
   },
   "dependencies": {

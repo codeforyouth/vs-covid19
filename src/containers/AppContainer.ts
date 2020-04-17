@@ -3,7 +3,7 @@ import { route } from 'preact-router';
 import { createContainer } from 'unstated-next';
 import { Support } from '../typings';
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import { RouteProps } from '../App';
+import { RouteProps } from '../pages/Top';
 
 export type AppContainerType = {
   word?: string | null;
