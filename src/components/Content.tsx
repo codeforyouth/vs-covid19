@@ -5,12 +5,11 @@ import media from 'styled-media-query';
 import { AppContainer } from '../containers';
 import { Card } from '.';
 import { LAYOUT_WIDTH } from '../constants';
-import Loader from '../assets/images/loader.svg';
 import { Colors, Categories, Targets } from '../shared';
+import SupportList from '../../data/supports.json';
 
 const CheckLoadStatus: FunctionalComponent = () => {
   const {
-    supportsData: { status, error, response },
     word,
     target,
     category,
@@ -56,20 +55,12 @@ const CheckLoadStatus: FunctionalComponent = () => {
             </div>
           ))}
         </div>
-        {status === (undefined || 'loading') && (
-          <div className="loader">
-            <img src={Loader} alt="読込中" />
-          </div>
-        )}
-        {status === 'fail' && <p>{error.name + ':' + error.message}</p>}
-        {status == 'success' && (!response || (word && !filteredSupports)) && (
-          <p>何もありません</p>
-        )}
+        {!SupportList || (word && !filteredSupports && <p>何もありません</p>)}
         {!word &&
           !target &&
           !category &&
-          response &&
-          response.data?.map((item, i) => <Card key={i} {...item} />)}
+          SupportList &&
+          SupportList.map((item, i) => <Card key={i} {...item} />)}
         {filteredSupports && (
           <div>
             <span>該当件数: {filteredSupports.length}件</span>

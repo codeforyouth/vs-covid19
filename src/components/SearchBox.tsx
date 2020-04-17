@@ -1,5 +1,4 @@
 import { h, FunctionalComponent } from 'preact';
-import { Link } from 'preact-router/match';
 import styled from 'styled-components';
 import media from 'styled-media-query';
 import { AppContainer } from '../containers';

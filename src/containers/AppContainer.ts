@@ -2,41 +2,23 @@ import { useState, useCallback, useEffect } from 'preact/hooks';
 import { route } from 'preact-router';
 import { createContainer } from 'unstated-next';
 import { Support } from '../typings';
-import axios, { AxiosResponse, AxiosError } from 'axios';
 import { RouteProps } from '../pages/Top';
+import SupportList from '../../data/supports.json';
 
 export type AppContainerType = {
   word?: string | null;
   target?: string | null;
   category?: string | null;
-  supportsData: SupportsData;
   handleSetWord: (w?: string) => void;
   handleSetTarget: (w?: string) => void;
   handleSetCategory: (w?: string) => void;
-  handleSetSupports: (supports?: Support[] | null) => void;
-  fetchSupports: (url: string) => void;
   filteredSupports: Support[] | null;
-};
-
-type SupportsData = {
-  response: AxiosResponse<Support[]> | null;
-  error: AxiosError | null;
-  status?: 'loading' | 'success' | 'fail';
-};
-
-const initialSupportState: SupportsData = {
-  response: null,
-  error: null,
-  status: undefined,
 };
 
 const useAppContainer = (): AppContainerType => {
   const [word, setWord] = useState(null); // 単語
   const [target, setTarget] = useState(null); // 対象者チェックボックス
   const [category, setCategory] = useState(null); // カテゴリ
-  const [supportsData, setSupportsData] = useState<SupportsData>(
-    initialSupportState,
-  ); // 元となるデータ本体
   const [filteredSupports, setFilteredSupports] = useState<Support[] | null>(
     null,
   ); // 絞られた支援情報
@@ -48,36 +30,6 @@ const useAppContainer = (): AppContainerType => {
     (w?: string): void => setCategory(w),
     [],
   );
-  const handleSetSupports = useCallback((supports?: Support[] | null): void => {
-    setSupportsData({
-      ...supportsData,
-      response: { ...supportsData.response, data: supports },
-    });
-  }, []);
-
-  // 初期読込
-  const fetchSupports = useCallback(async (url: string): Promise<void> => {
-    setSupportsData({
-      ...supportsData,
-      status: 'loading',
-    });
-    try {
-      const res: AxiosResponse<Support[] | null> = await axios.get(url);
-      setSupportsData(prevState => ({
-        ...prevState,
-        response: res,
-        status: 'success',
-      }));
-      return Promise.resolve();
-    } catch (err) {
-      setSupportsData(prevState => ({
-        ...prevState,
-        error: err,
-        status: 'fail',
-      }));
-      return Promise.reject();
-    }
-  }, []);
 
   // 文字検索
   const filterByWord = useCallback((supports: Support[], word: string) => {
@@ -119,7 +71,7 @@ const useAppContainer = (): AppContainerType => {
 
   // 絞り込み処理
   useEffect(() => {
-    const supports = supportsData?.response?.data;
+    const supports = SupportList;
     if (!supports || (!word && !target && !category))
       return setFilteredSupports(null);
     if (word && !target && !category) {
@@ -158,15 +110,12 @@ const useAppContainer = (): AppContainerType => {
 
   return {
     word,
-    supportsData,
     filteredSupports,
     target,
     category,
     handleSetWord,
     handleSetTarget,
     handleSetCategory,
-    handleSetSupports,
-    fetchSupports,
   };
 };
 
